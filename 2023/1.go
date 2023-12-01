@@ -10,47 +10,70 @@ import (
 )
 
 func main() {
-	numbers := [18]string{"1", "2", "3", "4", "5", "6", "7", "8", "9", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
-	file, err := os.OpenFile("input_1.txt", os.O_RDONLY, os.ModePerm)
+	digits := [18]string{
+		"1", "2", "3", "4", "5", "6", "7", "8", "9",
+		"one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+	}
+
+	file := Getfile("input_1.txt")
+	defer file.Close()
+
+	sum := 0
+	sc := bufio.NewScanner(file)
+
+	for sc.Scan() {
+		text := sc.Text()
+		firstDigit, secondDigit := Getdigitstrings(text, digits)
+		sum += Buildnumber(firstDigit, secondDigit)
+	}
+
+	fmt.Println(sum)
+}
+
+func Getfile(path string) *os.File {
+	file, err := os.OpenFile(path, os.O_RDONLY, os.ModePerm)
+
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	defer file.Close()
+	return file
+}
 
-	sc := bufio.NewScanner(file)
+func Getdigitstrings(input string, possibleDigits [18]string) (string, string) {
+	var lowestIndex int = 1000 // known that no index will be this high
+	var lowestIndexDigit string = ""
+	var highestIndex int = -1
+	var highestIndexDigit string = ""
 
-	sum := 0
-	for sc.Scan() {
-		text := sc.Text()
-		var lowestIndex int = 1000
-		var lowestIndexDigit string = ""
-		var highestIndex int = -1
-		var highestIndexDigit string = ""
-		var index int = -1
-		for i := 0; i < len(numbers); i++ {
-			index = strings.Index(text, numbers[i])
-			if index != -1 && index < lowestIndex {
-				lowestIndex = index
-				lowestIndexDigit = numbers[i]
-			}
-
-			index = strings.LastIndex(text, numbers[i])
-			if index != -1 && index > highestIndex {
-				highestIndex = index
-				highestIndexDigit = numbers[i]
-			}
+	var index int = -1
+	for i := 0; i < len(possibleDigits); i++ {
+		index = strings.Index(input, possibleDigits[i])
+		if index != -1 && index < lowestIndex {
+			lowestIndex = index
+			lowestIndexDigit = possibleDigits[i]
 		}
 
-		number := Todigit(lowestIndexDigit) + Todigit(highestIndexDigit)
-		i, err := strconv.Atoi(number)
-		if err != nil {
-			log.Fatal(err)
+		index = strings.LastIndex(input, possibleDigits[i])
+		if index != -1 && index > highestIndex {
+			highestIndex = index
+			highestIndexDigit = possibleDigits[i]
 		}
-		sum += i
 	}
 
-	fmt.Println(sum)
+	return lowestIndexDigit, highestIndexDigit
+}
+
+func Buildnumber(firstDigit string, secondDigit string) int {
+	numberString := Todigit(firstDigit) + Todigit(secondDigit)
+
+	number, err := strconv.Atoi(numberString)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return number
 }
 
 func Todigit(number string) string {
