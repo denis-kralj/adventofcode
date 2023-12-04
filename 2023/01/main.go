@@ -1,46 +1,39 @@
 package main
 
 import (
-	"bufio"
+	"aoc/utils"
 	"fmt"
 	"log"
-	"os"
 	"strconv"
 	"strings"
 )
 
-func main() {
-	digits := [18]string{
-		"1", "2", "3", "4", "5", "6", "7", "8", "9",
-		"one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
-	}
+var digitsNumeric []string = []string{
+	"1", "2", "3", "4", "5", "6", "7", "8", "9",
+}
 
-	file := Getfile("input_1.txt")
-	defer file.Close()
+var digitsString []string = []string{
+	"one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+}
+
+func main() {
+	inputLines, _ := utils.GetProblemLines()
 
 	sum := 0
-	sc := bufio.NewScanner(file)
+	sum2 := 0
 
-	for sc.Scan() {
-		text := sc.Text()
-		firstDigit, secondDigit := Getdigitstrings(text, digits)
-		sum += Buildnumber(firstDigit, secondDigit)
+	for _, text := range inputLines {
+		firstDigit, secondDigit := GetDigitStrings(text, digitsNumeric)
+		sum += BuildNumber(firstDigit, secondDigit)
+		firstDigit, secondDigit = GetDigitStrings(text, append(digitsNumeric, digitsString...))
+		sum2 += BuildNumber(firstDigit, secondDigit)
 	}
 
 	fmt.Println(sum)
+	fmt.Println(sum2)
 }
 
-func Getfile(path string) *os.File {
-	file, err := os.OpenFile(path, os.O_RDONLY, os.ModePerm)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return file
-}
-
-func Getdigitstrings(input string, possibleDigits [18]string) (string, string) {
+func GetDigitStrings(input string, possibleDigits []string) (string, string) {
 	var lowestIndex int = 1000 // known that no index will be this high
 	var lowestIndexDigit string = ""
 	var highestIndex int = -1
@@ -64,8 +57,8 @@ func Getdigitstrings(input string, possibleDigits [18]string) (string, string) {
 	return lowestIndexDigit, highestIndexDigit
 }
 
-func Buildnumber(firstDigit string, secondDigit string) int {
-	numberString := Todigit(firstDigit) + Todigit(secondDigit)
+func BuildNumber(firstDigit string, secondDigit string) int {
+	numberString := ToDigit(firstDigit) + ToDigit(secondDigit)
 
 	number, err := strconv.Atoi(numberString)
 
@@ -76,7 +69,7 @@ func Buildnumber(firstDigit string, secondDigit string) int {
 	return number
 }
 
-func Todigit(number string) string {
+func ToDigit(number string) string {
 	switch number {
 	case "one":
 		return "1"
