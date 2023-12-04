@@ -1,10 +1,8 @@
 package main
 
 import (
-	"bufio"
+	"aoc/utils"
 	"fmt"
-	"log"
-	"os"
 	"strconv"
 	"strings"
 )
@@ -16,10 +14,6 @@ type PartNumberData struct {
 }
 
 func main() {
-	file := Getfile("input_3.txt")
-	defer file.Close()
-
-	sc := bufio.NewScanner(file)
 
 	var top = ""
 	var mid = ""
@@ -29,8 +23,8 @@ func main() {
 	var sum int = 0
 	var partNumberDataCollection = []PartNumberData{}
 
-	for sc.Scan() {
-		text := sc.Text()
+	inputLines, _ := utils.GetProblemLines()
+	for _, text := range inputLines {
 		top = mid
 		mid = bot
 		bot = text
@@ -46,7 +40,7 @@ func main() {
 				numberString += string(character)
 			} else {
 				if numberString != "" {
-					value, partNumberData := Getpartnumberorzero(top, mid, bot, numberString, index, lineNumber)
+					value, partNumberData := GetPartNumberOrZero(top, mid, bot, numberString, index, lineNumber)
 					sum += value
 					partNumberDataCollection = append(partNumberDataCollection, partNumberData...)
 					numberString = ""
@@ -55,7 +49,7 @@ func main() {
 		}
 
 		if numberString != "" {
-			value, partNumberData := Getpartnumberorzero(top, mid, bot, numberString, len(mid), lineNumber)
+			value, partNumberData := GetPartNumberOrZero(top, mid, bot, numberString, len(mid), lineNumber)
 			sum += value
 			partNumberDataCollection = append(partNumberDataCollection, partNumberData...)
 		}
@@ -74,7 +68,7 @@ func main() {
 			numberString += string(character)
 		} else {
 			if numberString != "" {
-				value, partNumberData := Getpartnumberorzero(top, mid, bot, numberString, index, lineNumber)
+				value, partNumberData := GetPartNumberOrZero(top, mid, bot, numberString, index, lineNumber)
 				sum += value
 				partNumberDataCollection = append(partNumberDataCollection, partNumberData...)
 				numberString = ""
@@ -83,7 +77,7 @@ func main() {
 	}
 
 	if numberString != "" {
-		value, partNumberData := Getpartnumberorzero(top, mid, bot, numberString, len(mid), lineNumber)
+		value, partNumberData := GetPartNumberOrZero(top, mid, bot, numberString, len(mid), lineNumber)
 		sum += value
 		partNumberDataCollection = append(partNumberDataCollection, partNumberData...)
 	}
@@ -126,7 +120,7 @@ func filter[T any](ss []T, test func(T) bool) (ret []T) {
 	return
 }
 
-func Getpartnumberorzero(top string, mid string, bot string, numberString string, indexAfterNumber int, lineNumber int) (int, []PartNumberData) {
+func GetPartNumberOrZero(top string, mid string, bot string, numberString string, indexAfterNumber int, lineNumber int) (int, []PartNumberData) {
 	symbols := "*=-+&#%/@$"
 	number, _ := strconv.Atoi(numberString)
 	partNumberData := []PartNumberData{}
@@ -171,14 +165,4 @@ func Getpartnumberorzero(top string, mid string, bot string, numberString string
 		return 0, partNumberData
 	}
 	return number, partNumberData
-}
-
-func Getfile(path string) *os.File {
-	file, err := os.OpenFile(path, os.O_RDONLY, os.ModePerm)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return file
 }
