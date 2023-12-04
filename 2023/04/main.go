@@ -1,10 +1,8 @@
 package main
 
 import (
-	"bufio"
+	"aoc/utils"
 	"fmt"
-	"log"
-	"os"
 	"strings"
 )
 
@@ -15,17 +13,12 @@ type Scratchcard struct {
 }
 
 func main() {
-	file := GetFile("input.txt")
-	defer file.Close()
-
-	sc := bufio.NewScanner(file)
-
+	inputLines, _ := utils.GetProblemLines()
 	sum := 0
 
 	scratchcards := []Scratchcard{}
 
-	for sc.Scan() {
-		text := sc.Text()
+	for _, text := range inputLines {
 		points, scratchcard := GetPoints(text)
 		sum += points
 		scratchcards = append(scratchcards, scratchcard)
@@ -98,14 +91,4 @@ func contains(ss []string, ele string) bool {
 		}
 	}
 	return false
-}
-
-func GetFile(path string) *os.File {
-	file, err := os.OpenFile(path, os.O_RDONLY, os.ModePerm)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return file
 }
