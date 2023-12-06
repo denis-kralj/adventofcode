@@ -6,6 +6,15 @@ import (
 	"os"
 )
 
+func Contains(array []string, element string) bool {
+	for _, e := range array {
+		if e == element {
+			return true
+		}
+	}
+	return false
+}
+
 func GetProblemLines(arg ...string) ([]string, error) {
 	path := ""
 	data := []string{}
