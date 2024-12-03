@@ -3,9 +3,7 @@ package main
 import (
 	"aoc/utils"
 	"fmt"
-	"log"
 	"slices"
-	"strconv"
 	"strings"
 )
 
@@ -19,8 +17,8 @@ func main() {
 	for _, text := range inputLines {
 		stringNumberPair := strings.Split(text, "   ")
 
-		firstList = append(firstList, GetNumberFromString(stringNumberPair[0]))
-		secondList = append(secondList, GetNumberFromString(stringNumberPair[1]))
+		firstList = append(firstList, utils.GetNumberFromString(stringNumberPair[0]))
+		secondList = append(secondList, utils.GetNumberFromString(stringNumberPair[1]))
 	}
 
 	slices.Sort(firstList)
@@ -55,13 +53,4 @@ func main() {
 
 	fmt.Println("Total distance between lists: ", sum)
 	fmt.Println("Similarity score: ", simScore)
-}
-func GetNumberFromString(input string) int {
-	number, err := strconv.Atoi(input)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return number
 }

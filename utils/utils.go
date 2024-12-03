@@ -3,7 +3,9 @@ package utils
 import (
 	"bufio"
 	"errors"
+	"log"
 	"os"
+	"strconv"
 )
 
 func Contains(array []string, element string) bool {
@@ -43,4 +45,14 @@ func GetProblemLines(arg ...string) ([]string, error) {
 	}
 
 	return output, nil
+}
+
+func GetNumberFromString(input string) int {
+	number, err := strconv.Atoi(input)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return number
 }

@@ -3,8 +3,6 @@ package main
 import (
 	"aoc/utils"
 	"fmt"
-	"log"
-	"strconv"
 	"strings"
 )
 
@@ -19,7 +17,7 @@ func main() {
 		stringNumbers := strings.Split(text, " ")
 
 		for _, stringNumber := range stringNumbers {
-			numberList = append(numberList, GetNumberFromString(stringNumber))
+			numberList = append(numberList, utils.GetNumberFromString(stringNumber))
 		}
 
 		if isSafe(numberList) {
@@ -86,14 +84,4 @@ func isSafe(sequence []int) bool {
 	}
 
 	return true
-}
-
-func GetNumberFromString(input string) int {
-	number, err := strconv.Atoi(input)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return number
 }

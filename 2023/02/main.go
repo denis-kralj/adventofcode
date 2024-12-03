@@ -3,8 +3,6 @@ package main
 import (
 	"aoc/utils"
 	"fmt"
-	"log"
-	"strconv"
 	"strings"
 )
 
@@ -44,7 +42,7 @@ func BuildCandidate(input string) Game {
 	candidate := Game{}
 	gameResults := strings.Split(input, ":")
 	gameNumber := strings.Split(gameResults[0], " ")[1]
-	candidate.gameNumber = GetNumberFromString(gameNumber)
+	candidate.gameNumber = utils.GetNumberFromString(gameNumber)
 	candidate.blueCount = GetMaxCountForColor(gameResults[1], "blue")
 	candidate.redCount = GetMaxCountForColor(gameResults[1], "red")
 	candidate.greenCount = GetMaxCountForColor(gameResults[1], "green")
@@ -59,21 +57,11 @@ func GetMaxCountForColor(gamesPlayed string, color string) int {
 		draws := strings.Split(games[i], ",")
 		for j := 0; j < len(draws); j++ {
 			draw := strings.Split(strings.TrimSpace(draws[j]), " ")
-			if draw[1] == color && GetNumberFromString(draw[0]) > highestCount {
-				highestCount = GetNumberFromString(draw[0])
+			if draw[1] == color && utils.GetNumberFromString(draw[0]) > highestCount {
+				highestCount = utils.GetNumberFromString(draw[0])
 			}
 		}
 	}
 
 	return highestCount
-}
-
-func GetNumberFromString(input string) int {
-	number, err := strconv.Atoi(input)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return number
 }
