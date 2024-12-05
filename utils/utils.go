@@ -8,7 +8,11 @@ import (
 	"strconv"
 )
 
-func Contains(array []string, element string) bool {
+type Comparable interface {
+	int | float64 | string
+}
+
+func Contains[T Comparable](array []T, element T) bool {
 	for _, e := range array {
 		if e == element {
 			return true
