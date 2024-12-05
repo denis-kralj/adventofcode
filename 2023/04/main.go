@@ -43,7 +43,7 @@ func GetWinnerCount(scratchcard Scratchcard) int {
 	count := 0
 
 	for _, w := range scratchcard.winners {
-		if contains(scratchcard.draws, w) {
+		if utils.Contains(scratchcard.draws, w) {
 			count++
 		}
 	}
@@ -60,7 +60,7 @@ func GetPoints(input string) (int, Scratchcard) {
 	draws := filter(strings.Split(strings.TrimSpace(numberStrings[1]), " "), IsNotEmpty)
 
 	for _, w := range winners {
-		if contains(draws, w) {
+		if utils.Contains(draws, w) {
 			if points == 0 {
 				points = 1
 			} else {
@@ -82,13 +82,4 @@ func filter[T any](ss []T, test func(T) bool) (ret []T) {
 		}
 	}
 	return
-}
-
-func contains(ss []string, ele string) bool {
-	for _, s := range ss {
-		if s == ele {
-			return true
-		}
-	}
-	return false
 }

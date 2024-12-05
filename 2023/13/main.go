@@ -117,12 +117,5 @@ func rotateBy90Degrees(segment []string) []string {
 		}
 	}
 
-	// for i := range result {
-	// 	if i >= len(result)-1-i {
-	// 		break
-	// 	}
-	// 	result[i], result[len(result)-1-i] = result[len(result)-1-i], result[i]
-	// }
-
 	return result
 }
